@@ -1,6 +1,7 @@
 ;===== Change filament G-code ===
 ;===== version: 1.0 =========================
 ;===== version date: 20250220 ======
+; use at your own risk. tested, but could cause issues if not used properly
 
 M620 S[next_extruder]A
 M204 S9000
@@ -8,11 +9,9 @@ M204 S9000
 G17
 G2 Z{z_after_toolchange + 0.4} I0.86 J0.86 P1 F10000 ; spiral lift a little from second lift
 {endif}
-G1 Z{max_layer_z + 3.0} F1200
+G0 Z{max_layer_z + 3.0} F1200
 
 ;M400
-
-
 
 M106 P1 S255 ; Set fan 1 (part cooling) to 100% to reduce filament spillage while cutting
 M106 P2 S0 ; Auxiliary fan set to zero
@@ -23,9 +22,9 @@ M106 P2 S0 ; Auxiliary fan set to zero
 
 ; Go to cutting current filament position in two path to avoid problem on cutter actuator
 ; TODO is this really necessary?? cut is done later... with T
-G1 Y0 F24000
-G1 Y-3 F9000
-G1 X20 F24000
+G0 Y0 F24000
+G0 Y-3 F9000
+G0 X20 F24000
 
 ; retract filament before cutting
 {if long_retractions_when_cut[previous_extruder]}
@@ -55,16 +54,12 @@ M620.1 E F[new_filament_e_feedrate] T{nozzle_temperature_range_high[next_extrude
 
 {if long_retractions_when_cut[previous_extruder]}
 M620.11 S1 I[next_extruder] E{retraction_distances_when_cut[previous_extruder]} F{new_filament_e_feedrate}
-;M628 S1
-;G92 E0
-;G1 E{retraction_distances_when_cut[previous_extruder]} F[new_filament_e_feedrate]
-;M400
-;M629 S1
 {else}
 M620.11 S0
 {endif}
 G92 E0
 
+; FLUSH_START 1
 {if flush_length_1 > 1}
 M83
 
@@ -76,7 +71,6 @@ M109 S{nozzle_temperature_range_high[previous_extruder]}
 M109 S{nozzle_temperature_range_high[next_extruder]}
 {endif}
 
-; FLUSH_START 1
 {if flush_length_1 > 23.7}
 G1 E22.7 F{old_filament_e_feedrate * 1.2} ; uses old filament feedrate
 G1 E0.2 F120
@@ -103,7 +97,7 @@ G1 E[old_retract_length_toolchange] F300
 {if flush_length_2 > 1}
 
 G91
-G1 X3 F12000; move aside to extrude
+G0 X3 F12000; move aside to extrude
 G90
 M83
 
@@ -126,7 +120,7 @@ G1 E[new_retract_length_toolchange] F300
 {if flush_length_3 > 1}
 
 G91
-G1 X3 F12000; move aside to extrude
+G0 X3 F12000; move aside to extrude
 G90
 M83
 
@@ -149,7 +143,7 @@ G1 E[new_retract_length_toolchange] F300
 {if flush_length_4 > 1}
 
 G91
-G1 X3 F12000; move aside to extrude
+G0 X3 F12000; move aside to extrude
 G90
 M83
 
@@ -180,31 +174,31 @@ M106 P1 S255
 M400 S3 ; Required : if it is present time will be couted as "Travel" time, if it is missing time will be counted as "Sparse/Wall or other Print" time
 
 ;G1 X[travel_point_3_x] Y[travel_point_3_y] F18000
-G1 Y265 F3000
+G0 Y265 F3000
 
 ; try to break the filament before wiping
-G1 Y250 F18000
-G1 Y245 F18000
-G1 Y250 F18000
-G1 Y245 F18000
-G1 Y265 F18000
+G0 Y250 F18000
+G0 Y245 F18000
+G0 Y250 F18000
+G0 Y245 F18000
+G0 Y265 F18000
 
 ; shake to put down garbage
-G1 X70 F9000
-G1 X75 F18000
-G1 X65 F18000
-G1 X75 F18000
-G1 X65 F18000
-G1 X81 F6000
-G1 X93 F18000
-G1 X81 F18000
-G1 Y245 F18000
-G1 X93 F18000
-G1 Y265 F18000
-G1 X80 F18000
-G1 X93 F18000
+G0 X70 F9000
+G0 X75 F18000
+G0 X65 F18000
+G0 X75 F18000
+G0 X65 F18000
+G0 X81 F6000
+G0 X93 F18000
+G0 X81 F18000
+G0 Y245 F18000
+G0 X93 F18000
+G0 Y265 F18000
+G0 X80 F18000
+G0 X93 F18000
 ;G1 X128 F18000 ; wipe and shake
-G1 Y257 F18000 ; prevent collision, 257 just outside printable area
+G0 Y257 F18000 ; prevent collision, 257 just outside printable area
 
 ;G1 X70 F5000
 ;G1 X90 F3000
@@ -228,7 +222,7 @@ G1 Y257 F18000 ; prevent collision, 257 just outside printable area
 
 M400
 
-G1 Z{max_layer_z + 3.0} F3000
+G0 Z{max_layer_z + 3.0} F3000
 
 {if layer_z <= (initial_layer_print_height + 0.001)}
 M204 S[initial_layer_acceleration]
@@ -237,7 +231,7 @@ M204 S[default_acceleration]
 {endif}
 
 {else}
-G1 X[x_after_toolchange] Y[y_after_toolchange] Z[z_after_toolchange] F18000
+G0 X[x_after_toolchange] Y[y_after_toolchange] Z[z_after_toolchange] F18000
 {endif}
 
 M621 S[next_extruder]A

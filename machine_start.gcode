@@ -9,7 +9,7 @@ G91
 M17 Z0.4 ; lower the z-motor current
 G380 S2 Z15 F300 ; G380 is same as G38; lower the hotbed , to prevent the nozzle is below the hotbed
 G380 S2 Z-10 F300 ;
-;G1 Z5 F300;
+;G0 Z5 F300;
 G90
 M17 X1.2 Y1.2 Z0.75 ; reset motor current to default
 M960 S5 P1 ; turn on logo lamp
@@ -43,19 +43,19 @@ G0 Z10 F1200
 G90
 G28 X
 M975 S1 ; turn on vibration supression
-G1 X60 F12000
-G1 Y245
-G1 Y265 F3000
+G0 X60 F12000
+G0 Y245
+G0 Y265 F3000
 M620 M
 M620 S[initial_extruder]A   ; switch material if AMS exist
     M109 S[nozzle_temperature_initial_layer]
-    G1 X120 F12000
+    G0 X120 F12000
 
-    G1 X20 Y50 F12000
-    G1 Y-3
+    G0 X20 Y50 F12000
+    G0 Y-3
     T[initial_extruder]
-    G1 X54 F12000
-    G1 Y265
+    G0 X54 F12000
+    G0 Y265
     M400
 M621 S[initial_extruder]A
 M620.1 E F{filament_max_volumetric_speed[initial_extruder]/2.4053*60} T{nozzle_temperature_range_high[initial_extruder]}
@@ -82,28 +82,28 @@ G1 E-0.5 F300
 M1002 gcode_claim_action : 14
 
 ; try to break the filament before wiping
-G1 Y250 F18000
-G1 Y245 F18000
-G1 Y250 F18000
-G1 Y245 F18000
-G1 Y265 F18000
+G0 Y250 F18000
+G0 Y245 F18000
+G0 Y250 F18000
+G0 Y245 F18000
+G0 Y265 F18000
 
 ; shake to put down garbage
-G1 X70 F9000
-G1 X75 F18000
-G1 X65 F18000
-G1 X75 F18000
-G1 X65 F18000
-G1 X81 F6000
-G1 X93 F18000
-G1 X81 F18000
-G1 Y245 F18000
-G1 X93 F18000
-G1 Y265 F18000
-G1 X80 F18000
-G1 X93 F18000
-G1 X128 F18000 ; go to center
-G1 Y245 F18000
+G0 X70 F9000
+G0 X75 F18000
+G0 X65 F18000
+G0 X75 F18000
+G0 X65 F18000
+G0 X81 F6000
+G0 X93 F18000
+G0 X81 F18000
+G0 Y245 F18000
+G0 X93 F18000
+G0 Y265 F18000
+G0 X80 F18000
+G0 X93 F18000
+G0 X128 F18000 ; go to center
+G0 Y245 F18000
 M400
 
 M104 S140 ; set nozzle temp without waiting
@@ -161,19 +161,19 @@ M106 P2 S100 ; turn on big fan ,to cool down toolhead
 M104 S{nozzle_temperature_range_low[initial_extruder]} ; set extrude temp earlier, to reduce wait time
 
 ;===== mech mode fast check============================
-;G1 X128 Y128 Z10 F20000
+;G0 X128 Y128 Z10 F20000
 ;M400 P200
 ;M970.3 Q1 A7 B30 C80  H15 K0
 ;M974 Q1 S2 P0
 
-;G1 X128 Y128 Z10 F20000
+;G0 X128 Y128 Z10 F20000
 ;M400 P200
 ;M970.3 Q0 A7 B30 C90 Q0 H15 K0
 ;M974 Q0 S2 P0
 
 ;M975 S1 ; turn on vibration supression
-;G1 F30000
-;G1 X230 Y15
+;G0 F30000
+;G0 X230 Y15
 ;G28 X ; re-home XY
 ;===== fmech mode fast check============================
 
